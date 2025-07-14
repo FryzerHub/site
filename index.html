@@ -14,15 +14,14 @@
 
     body {
       margin: 0;
-      padding: 0;
       font-family: 'Segoe UI', sans-serif;
       background-color: var(--bg);
       color: var(--text);
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      flex-direction: column;
+      padding: 40px 20px;
       overflow-x: hidden;
     }
 
@@ -33,17 +32,17 @@
       width: 60px;
       height: 60px;
       animation: spin 1s linear infinite;
-      margin-top: 50px;
+      margin-top: 80px;
     }
 
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      to { transform: rotate(360deg); }
     }
 
     .container {
       text-align: center;
       display: none;
+      max-width: 700px;
       animation: fadeIn 0.5s ease forwards;
     }
 
@@ -52,12 +51,13 @@
     }
 
     h1 {
-      font-size: 48px;
+      font-size: 42px;
       color: var(--accent);
+      margin-bottom: 10px;
     }
 
     h2 {
-      font-size: 24px;
+      font-size: 22px;
       margin-bottom: 30px;
     }
 
@@ -65,10 +65,7 @@
       background: var(--card);
       padding: 20px;
       border-radius: 10px;
-      margin: 10px;
-      max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
+      margin: 15px auto;
       box-shadow: 0 0 10px rgba(0,0,0,0.4);
     }
 
@@ -81,21 +78,13 @@
       border-radius: 6px;
       cursor: pointer;
       margin-top: 20px;
-      transition: background-color 0.3s;
+      transition: 0.3s;
     }
 
-    button:hover {
-      background-color: #00dddd;
-    }
-
-    .terms {
-      font-size: 12px;
-      color: #ccc;
-      max-width: 600px;
-      margin-top: 30px;
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.6;
+    button[disabled] {
+      background-color: #555;
+      cursor: not-allowed;
+      color: #888;
     }
 
     .dark-toggle {
@@ -112,14 +101,33 @@
     }
 
     .ad-box {
-      margin: 20px auto;
+      margin: 30px auto;
       padding: 20px;
-      max-width: 400px;
       background-color: #222;
       border: 1px dashed var(--accent);
       border-radius: 8px;
-      font-size: 14px;
       color: #aaa;
+    }
+
+    .terms-container {
+      display: none;
+      background-color: #1e1e1e;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+      text-align: left;
+      font-size: 14px;
+      color: #ccc;
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -139,51 +147,93 @@
   </div>
 
   <div class="step-box" id="step2" style="display:none;">
-    <p><strong>Step 2:</strong> Complete the Linkvertise process to get the key.</p>
-    <button onclick="window.location.href='https://linkvertise.com/1345739/aGoWM0iyCENH?o=sharing'">Get Key</button>
+    <p><strong>Step 2:</strong> Please wait <span id="countdown">15</span> seconds to continue.</p>
+    <button id="linkButton" disabled onclick="goToKey()">Get Key</button>
   </div>
 
   <div class="ad-box">
-    <p><strong>Ad Space:</strong><br>You can insert your ad code here (e.g. Google AdSense or custom image).</p>
+    <p><strong>Ad:</strong><br>
+      <!-- Linkvertise or any ad code can go here -->
+      <iframe data-aa='2294031' src='//ad.a-ads.com/2294031?size=320x100' scrolling='no' style='width:320px; height:100px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
+    </p>
   </div>
 
-  <div class="terms">
+  <button onclick="toggleTerms()">Show Terms & Conditions</button>
+  <div class="terms-container" id="termsBox">
+    <p><strong>Terms & Conditions</strong></p>
     <p>
-      By using this key system, you agree that Fryzer Hub is for educational or authorized use only.
-      This site may use link monetization and is not affiliated with Roblox Corporation.
-      Do not share your key or exploit software with others. Use at your own risk.
+      By using this key system, you agree to comply with the terms outlined by Fryzer Hub. This system may redirect you to external monetized links such as Linkvertise, and you understand that these are necessary to access your key and use our services.
+    </p>
+    <p>
+      You understand and accept that this site and tool are not affiliated with or endorsed by Roblox Corporation. Use of the Fryzer Hub is strictly at your own risk and is intended for educational and personal research purposes only.
+    </p>
+    <p>
+      Sharing, modifying, or distributing the key without permission is prohibited. We reserve the right to disable access if abuse or misuse is detected.
+    </p>
+    <p>
+      By clicking “Get Key”, you acknowledge that you have read, understood, and agree to these terms.
     </p>
   </div>
 </div>
 
 <script>
+  // Loading animation
   window.onload = function() {
     setTimeout(() => {
       document.getElementById("loader").style.display = "none";
       document.getElementById("content").style.display = "block";
-    }, 1200);
+    }, 1000);
   };
 
-  function nextStep(current) {
-    if (current === 1) {
+  // Step logic
+  function nextStep(step) {
+    if (step === 1) {
       document.getElementById("step1").style.display = "none";
       document.getElementById("step2").style.display = "block";
+      startCountdown();
     }
   }
 
+  // 15 second timer
+  function startCountdown() {
+    let timeLeft = 15;
+    const countdownEl = document.getElementById("countdown");
+    const button = document.getElementById("linkButton");
+    const timer = setInterval(() => {
+      timeLeft--;
+      countdownEl.textContent = timeLeft;
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        button.disabled = false;
+        countdownEl.textContent = "0";
+      }
+    }, 1000);
+  }
+
+  // Open Linkvertise
+  function goToKey() {
+    window.location.href = "https://linkvertise.com/1345739/aGoWM0iyCENH?o=sharing";
+  }
+
+  // Toggle dark/light mode
   function toggleDarkMode() {
     const root = document.documentElement;
     const isDark = getComputedStyle(root).getPropertyValue('--bg').trim() === '#121212';
-
     if (isDark) {
-      root.style.setProperty('--bg', '#f5f5f5');
-      root.style.setProperty('--text', '#000');
-      root.style.setProperty('--card', '#e0e0e0');
+      root.style.setProperty('--bg', '#f0f0f0');
+      root.style.setProperty('--text', '#111');
+      root.style.setProperty('--card', '#ddd');
     } else {
       root.style.setProperty('--bg', '#121212');
       root.style.setProperty('--text', '#fff');
       root.style.setProperty('--card', '#1e1e1e');
     }
+  }
+
+  // Toggle terms visibility
+  function toggleTerms() {
+    const box = document.getElementById("termsBox");
+    box.style.display = box.style.display === "block" ? "none" : "block";
   }
 </script>
 
