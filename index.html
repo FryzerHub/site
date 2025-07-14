@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fryzer Hub</title>
   <style>
     :root {
@@ -23,21 +23,17 @@
       align-items: center;
     }
 
-    .logo {
-      width: 200px;
-      border-radius: 12px;
-      margin-top: 20px;
-    }
-
     h1 {
-      font-size: 40px;
+      font-size: 8vw;
       color: var(--accent);
-      margin-top: 20px;
+      margin-top: 40px;
+      text-align: center;
     }
 
     h2 {
-      font-size: 20px;
+      font-size: 5vw;
       margin-bottom: 20px;
+      text-align: center;
     }
 
     .dark-toggle {
@@ -51,13 +47,15 @@
       border-radius: 6px;
       font-size: 14px;
       cursor: pointer;
+      z-index: 1000;
     }
 
     .yt-icon {
       width: 40px;
-      position: absolute;
+      position: fixed;
       top: 20px;
       left: 20px;
+      z-index: 1000;
     }
 
     .terms-box {
@@ -82,19 +80,61 @@
       border-radius: 6px;
       cursor: pointer;
     }
-  </style>
+
+    #timer {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+
+    #step2 {
+      display: none;
+    }
+
+    @media (max-width: 500px) {
+      .yt-icon {
+        width: 30px;
+      }
+
+      .dark-toggle {
+        font-size: 12px;
+        padding: 4px 8px;
+      }
+
+      button {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+    }
+    @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade {
+    animation: fadeIn 1s ease forwards;
+  }
+</style>
 </head>
 <body>
 
 <a href="https://youtube.com/@p_g_b?si=ec4xr1sFqNIrO8a1" target="_blank">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" class="yt-icon" alt="YouTube" />
+  <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" class="yt-icon" alt="YouTube">
 </a>
 
 <button class="dark-toggle" onclick="toggleDarkMode()">Toggle Dark Mode</button>
 
-<img src="logo.jpg" alt="Fryzer Hub Logo" class="logo" />
-<h1>Fryzer Hub</h1>
-<h2>Key System</h2>
+<h1 class="fade">Fryzer Hub</h1>
+<h2 class="fade" style="font-size:6vw; text-align:center; color:#ffcc00;">Key System</h2>
+<h2 class="fade" style="font-size:5vw; text-align:center; color:var(--accent);">Steal a brainrot</h2>
+<div class="fade" style="background: var(--card); padding: 20px; margin-top: 20px; border-radius: 10px; max-width: 700px; text-align: center;">
+  <p style="font-size: 18px; line-height: 1.6; color: var(--text);">
+    Welcome to Fryzer Hub. This site is built to power your journey into the world of Roblox exploits. Follow the steps to unlock tools designed to enhance your experience. Stay safe, and always read our terms & services.
+  </p>
+</div>
+
+<button id="step1" onclick="startStep1()">Step 1</button>
+<div id="timer"></div>
+<button id="step2" onclick="startStep2()">Step 2</button>
 
 <button onclick="toggleTerms()">Show Terms & Services</button>
 <div class="terms-box" id="termsBox">
@@ -126,6 +166,30 @@
   function toggleTerms() {
     const termsBox = document.getElementById('termsBox');
     termsBox.style.display = termsBox.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function startStep1() {
+    const btn1 = document.getElementById('step1');
+    const btn2 = document.getElementById('step2');
+    const timer = document.getElementById('timer');
+    let seconds = 20;
+    btn1.disabled = true;
+    btn1.innerText = 'Step 1 Started';
+    timer.innerText = 'Please wait: ' + seconds + ' seconds';
+    const countdown = setInterval(() => {
+      seconds--;
+      timer.innerText = 'Please wait: ' + seconds + ' seconds';
+      if (seconds <= 0) {
+        clearInterval(countdown);
+        timer.innerText = '';
+        btn1.innerText = 'Step 1 Complete';
+        btn2.style.display = 'inline-block';
+      }
+    }, 1000);
+  }
+
+  function startStep2() {
+    window.location.href = 'https://link-target.net/1345739/aGoWM0iyCENH';
   }
 </script>
 
